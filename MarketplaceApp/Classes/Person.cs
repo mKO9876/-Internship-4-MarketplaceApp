@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace MarketplaceApp
 {
-    internal class Product
+    public abstract class Person
     {
+        public string username;
+        public string email;
+
+        public abstract void Print();
     }
 }
