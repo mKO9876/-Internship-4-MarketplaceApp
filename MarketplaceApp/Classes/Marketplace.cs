@@ -12,54 +12,88 @@ namespace MarketplaceApp
         List<Customer> customers = new List<Customer>();
         List<Vendor> vendors = new List<Vendor>();
         List<Product> products = new List<Product>();
+
+        Dictionary<string, (int, Product)> promoCodes = new Dictionary<string, (int, Product)>();
         //List<Transactions> transactions;
 
-        public void SignUp() {
-            Console.Clear();
-            Console.WriteLine("Create new customer account.");
-            string username = InputHelper.CheckUserInput("Insert username:  ");
-            string email;
-            Customer customerData;
-            do
+        public bool VendorEmailUsed(string email) //izmijenit 
+        {
+
+            if (vendors.Count == 0) return false;
+            foreach (var vendor in vendors)
             {
-                email = InputHelper.CheckEmail("Insert email: ");
-                customerData = EmailUsed(email);
-                if (customerData!=null) Console.WriteLine("Email in use, try different email.");
-            } while (customerData != null);
-
-            double balance = InputHelper.CheckBalance("Insert your balance: ");
-
-            Customer customer = new Customer(username, email, balance);
-            customers.Add(customer);
-            Console.WriteLine("New customer added: ");
-            customer.Print();
+                if (vendor.email == email) return true;
+            }
+            return false;
         }
 
-        public void LogIn()
+        public bool CustomerEmailUsed(string email)
         {
-            Console.Clear();
-            string email;
-            Customer customerData;
-            do
-            {
-                email = InputHelper.CheckEmail("Insert email: ");
-                customerData = EmailUsed(email);
-                if (customerData == null) Console.WriteLine("Email doesn't exist, try different one.");
-            } while (customerData == null);
-            Console.WriteLine("Welcome back!");
-            customerData.Print();
-        }
-
-        
-
-        Customer EmailUsed(string email)
-        {
-            if (customers.Count == 0) return null;
+            if (customers.Count == 0) return false;
             foreach (var customer in customers)
             {
-                if (customer.email == email) return customer;
+                if (customer.email == email) return true;
             }
-            return null;
+            return false;
         }
+
+        public void ShowAllInStock()
+        {
+            if (products.Count == 0)
+            {
+                Console.WriteLine("There are no products.");
+                return;
+            }
+
+            foreach (var product in products)
+            {
+                if (product.inStock) product.Print();
+            }
+        }
+
+        public void FilterByCategory(string category)
+        {
+            foreach (var product in products)
+            {
+                if (product.category.CheckCategoryEqual(category)) product.Print();
+            }
+        }
+
+        //vendor ubacuje promotivne kodove
+        public void AddPromoCode(Vendor vendor)
+        {
+            string pCode;
+            do
+            {
+                pCode = InputHelper.CheckUserInput("Insert promo code: ");
+                if (!promoCodes.ContainsKey(pCode)) Console.WriteLine("Promo code already exists, please input unique promo code");
+            } while (!promoCodes.ContainsKey(pCode));
+            int discount = InputHelper.CheckInt("Insert discount (without %): ");
+            Product productOnSale;
+            do
+            {
+                productOnSale = FindProductByName();
+                if (productOnSale.vendor.email != vendor.email) Console.WriteLine("You are not the owner of this product, insert promo code for your products only");
+            } while (productOnSale.vendor.email != vendor.email);
+             
+
+            promoCodes.Add(pCode, (discount, productOnSale));
+            Console.WriteLine("Promo code successfuly added.");
+        }
+
+        public Product FindProductByName()
+        {
+            string productName; 
+            while(true)
+            {
+                productName = InputHelper.CheckUserInput("Insert product name: ");
+                foreach (var product in products)
+                {
+                    if(product.name == productName) return product;
+                }
+            }
+        }
+
+
     }
 }

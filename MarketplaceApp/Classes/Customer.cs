@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MarketplaceApp
 {
-    internal class Customer : Person
+    public class Customer : Person
     {
         double balance;
         List<Product> productHistory;

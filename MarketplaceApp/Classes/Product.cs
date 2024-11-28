@@ -6,26 +6,41 @@ using System.Threading.Tasks;
 
 namespace MarketplaceApp
 {
-    internal class Product
+    public class Product
     {
         public Guid id;
-        string name;
+        public string name;
         string description;
-        double price;
-        bool inStock;
-        Vendor ventor;
+        public double price;
+        public bool inStock;
+        public Category category;
+        public Vendor vendor;
 
-        public Product(string name, string description, double price, Vendor vendor)
+        public Product(string name, string description, double price, Vendor vendor, Category category)
         {
             id = Guid.NewGuid();
-            this.name = name;  
+            this.name = name;
             this.description = description;
             this.price = price;
             this.inStock = true;
-            this.ventor = vendor;
+            this.vendor = vendor;
+            this.category = category;
         }
 
+        public void ChangePrice(double price)
+        {
+            this.price = price;
+        }
 
+        public void ChangeStockValue()
+        {
+            this.inStock = !this.inStock;
+        }
+
+        public void Print()
+        {
+            Console.WriteLine($"-> ID: {this.id}, name: {this.name}, category: {this.category.ReturnString()}, price:{this.price}");
+        }
     }
 
 }

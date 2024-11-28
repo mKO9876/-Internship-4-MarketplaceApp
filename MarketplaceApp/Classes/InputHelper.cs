@@ -41,11 +41,24 @@ namespace MarketplaceApp.Classes
             do
             {
                 input = CheckUserInput(text);
-                if (!double.TryParse(input, out balance)) Console.WriteLine("Unable to parse to number. TryAgain.");
-                if (balance < 0) Console.WriteLine("Balance cannot be less than 0");
+                if (!double.TryParse(input, out balance)) Console.WriteLine("Unable to parse to number. Try Again.");
+                if (balance < 0) Console.WriteLine("Input cannot be less than 0.");
             } while (!double.TryParse(input, out balance) || balance < 0);
             return balance;
 
+        }
+
+        public static int CheckInt(string text)
+        {
+            string input;
+            int discount;
+            do
+            {
+                input = CheckUserInput(text);
+                if (!int.TryParse(input, out discount)) Console.WriteLine("Unable to parse to number. Try Again.");
+                if (discount < 0) Console.WriteLine("Input cannot be less than 0.");
+            } while (!int.TryParse(input, out discount) || discount < 0);
+            return discount;
         }
     }
 }

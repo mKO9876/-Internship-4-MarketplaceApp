@@ -10,7 +10,10 @@ namespace MarketplaceApp
     {
 
         //konstruktor
-
+        public Vendor(string email, string username) {
+            this.email = email;
+            this.username = username;
+        }
         void AddProduct()
         {
 
