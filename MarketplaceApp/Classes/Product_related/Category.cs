@@ -59,6 +59,11 @@ namespace MarketplaceApp
             return false;
         }
 
-
+        public static bool CheckCategoryExists(string possibleCategory)
+        {
+            List<string> categoryList = new List<string> { "electronics", "clothing", "books", "dairy products", "meat", "fruits and vegetables", "snacks", "baked goods", "household" };
+            if (categoryList.Contains(possibleCategory)) return true;
+            return false;
+        }
     }
 }

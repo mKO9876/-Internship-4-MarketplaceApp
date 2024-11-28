@@ -43,20 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Category.cs" />
-    <Compile Include="Classes\PromoCodes.cs" />
-    <Compile Include="Classes\Transactions.cs" />
-    <Compile Include="Classes\Customer.cs" />
-    <Compile Include="Classes\InputHelper.cs" />
-    <Compile Include="Classes\Product.cs" />
-    <Compile Include="Classes\Person.cs" />
+    <Compile Include="Classes\Product_related\Category.cs" />
+    <Compile Include="Classes\Product_related\PromoCode.cs" />
+    <Compile Include="Classes\Static - helper\AccessAccount.cs" />
+    <Compile Include="Classes\User\Customer.cs" />
+    <Compile Include="Classes\Static - helper\InputHelper.cs" />
+    <Compile Include="Classes\Product_related\Product.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\Marketplace.cs" />
-    <Compile Include="Classes\Vendor.cs" />
+    <Compile Include="Classes\User\Vendor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,5 @@
 ﻿using MarketplaceApp.Classes;
+using MarketplaceApp.Classes.Static___helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,10 @@ namespace MarketplaceApp
                 switch (userInput)
                 {
                     case "1":
-                        CustomerAccessData();
+                        CustomerAccessAccount();
                         break;
                     case "2":
-                        VendorAccessData();
+                        VendorAccessAccount();
                         break;
                     case "3":
                         return;
@@ -36,22 +37,22 @@ namespace MarketplaceApp
             }
 
 
-            void CustomerAccessData()
+            void CustomerAccessAccount()
             {
                 Console.Clear();
                 Console.WriteLine("You choose: Customer options");
                 Console.WriteLine("Options:\n1 - Sign Up\n2 - Log In\n3 - Return");
                 string userInput = InputHelper.CheckUserInput("Select one option: ");
-                bool isCustomer = true;
+                Customer customer;
                 switch (userInput)
                 {
                     case "1":
-                        SignUp(isCustomer);
-                        //OTVORIT MU MARKETPLACE
+                        customer = AccessAccount.CustomerSignUp(marketplace);
+                        CustomerMarketplace(customer);
                         break;
                     case "2":
-                        LogIn(isCustomer);
-                        //OTVORIT MU MARKETPLACE
+                        customer = AccessAccount.CustomerLogIn(marketplace);
+                        CustomerMarketplace(customer);
                         break;
                     case "3":
                         return;
@@ -63,22 +64,22 @@ namespace MarketplaceApp
 
             }
 
-            void VendorAccessData()
+            void VendorAccessAccount()
             {
                 Console.Clear();
                 Console.WriteLine("You choose: Vendor options");
                 Console.WriteLine("Options:\n1 - Sign Up\n2 - Log In\n3 - Return");
                 string userInput = InputHelper.CheckUserInput("Select one option: ");
-                bool isCustomer = false;
+                Vendor vendor;
                 switch (userInput)
                 {
                     case "1":
-                        SignUp(isCustomer);
-                        //OTVORIT MU MARKETPLACE
+                        vendor = AccessAccount.VendorSignUp(marketplace);
+                        VendorMarketplace(vendor);
                         break;
                     case "2":
-                        LogIn(isCustomer);
-                        //OTVORIT MU MARKETPLACE
+                        vendor = AccessAccount.VendorLogIn(marketplace);
+                        VendorMarketplace(vendor);
                         break;
                     case "3":
                         return;
@@ -89,77 +90,53 @@ namespace MarketplaceApp
                 }
             }
 
-            void SignUp(bool isCustomer)
+            void CustomerMarketplace(Customer customer)
             {
-                Console.Clear();
-                Console.WriteLine("Create new account.");
-                string username = InputHelper.CheckUserInput("Insert username:  ");
-                string email;
-                bool emailUsed;
-                if (isCustomer)
+                while (true)
                 {
-                    do
+                    Console.WriteLine("1 - Check all products\n2 - Find product based on specific category\n3 - Check your favorites\n4 - Check your history\n5 - Check your returns\n6 - Log out");
+                    string input = InputHelper.CheckUserInput("Option: ");
+                    Console.Clear();
+                    switch (input)
                     {
-                        email = InputHelper.CheckEmail("Insert email: ");
-                        emailUsed = marketplace.CustomerEmailUsed(email);
-                        if (emailUsed) Console.WriteLine("Email in use, try different email.");
-                    } while (emailUsed);
-
-                    double balance = InputHelper.CheckBalance("Insert your balance: ");
-
-                    Customer customer = new Customer(username, email, balance);
-                    //marketplace.Add(customer);
-                    Console.WriteLine("New customer added: ");
-                    customer.Print();
-                    //ODE POZOVI ZA CUSTOMER
+                        case "1":
+                            Console.WriteLine("All products in stock: ");
+                            marketplace.ShowAllProductsInStock();
+                            break;
+                        case "2":
+                            string chosenCategory;
+                            do
+                            {
+                                Console.WriteLine("Categories:\n- electronics, \n- clothing, \n- books, \n- dairy products, \n- meat, \n- fruits and vegetables, \n- snacks, \n- baked goods, \n- household");
+                                chosenCategory = InputHelper.CheckUserInput("Which product category do you want to browse: ");
+                                if (!ShowCategory.CheckCategoryExists(chosenCategory)) Console.WriteLine("Category does not exist, try again.");
+                            } while (!ShowCategory.CheckCategoryExists(chosenCategory));
+                            marketplace.ShowProductsByCategory(chosenCategory);
+                            break;
+                        case "3":
+                            customer.ShowFavorites();
+                            break;
+                        case "4":
+                            break;
+                        case "5":
+                            break;
+                        case "6":
+                            return;
+                        default:
+                            Console.WriteLine("Error: unknown input value");
+                            break;
+                    }
                 }
-                else
-                {
-                    do
-                    {
-                        email = InputHelper.CheckEmail("Insert email: ");
-                        emailUsed = marketplace.VendorEmailUsed(email);
-                        if (emailUsed) Console.WriteLine("Email in use, try different email.");
-                    } while (emailUsed);
-
-                    Vendor vendor = new Vendor(username, email);
-                    //marketplace.Add(customer);
-                    Console.WriteLine("New vendor added: ");
-                    vendor.Print();
-                    //ODE POZOVI ZA VENDOR
-                }
-
             }
 
-            void LogIn(bool isCustomer)
+            void VendorMarketplace(Vendor vendor)
             {
-                Console.Clear();
-                Console.WriteLine("Log In");
-                string email;
-                bool emailUsed;
-                if (isCustomer)
+                while (true)
                 {
-                    do
-                    {
-                        email = InputHelper.CheckEmail("Insert email: ");
-                        emailUsed = marketplace.CustomerEmailUsed(email);
-                        if (!emailUsed) Console.WriteLine("Email does not exist, try again.");
-                    } while (!emailUsed);
-                    //marketplace.Add(customer);
-                    Console.WriteLine("Customer found ");
-                    //ODE POZOVI ZA CUSTOMER
-                }
-                else
-                {
-                    do
-                    {
-                        email = InputHelper.CheckEmail("Insert email: ");
-                        emailUsed = marketplace.VendorEmailUsed(email);
-                        if (!emailUsed) Console.WriteLine("Email does not exist, try again.");
-                    } while (!emailUsed);
-
-                    Console.WriteLine("Vendor found.");
-                    //ODE POZOVI ZA VENDOR
+                    Console.WriteLine("1 - Check your products\n2 - Add new product\n3 - Add promo code\n4 - Change product price\n5 - Check profit\n6 - Log out");
+                    string input = InputHelper.CheckUserInput("Option: ");
+                    Console.Clear();
+                    
                 }
             }
         }

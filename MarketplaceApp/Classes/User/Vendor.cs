@@ -6,22 +6,24 @@ using System.Threading.Tasks;
 
 namespace MarketplaceApp
 {
-    public class Vendor : Person
+    public class Vendor
     {
 
-        //konstruktor
+        public string name;
+        public string email;
+        public double profit;
         public Vendor(string email, string username) {
             this.email = email;
-            this.username = username;
+            this.name = username;
         }
         void AddProduct()
         {
 
         }
 
-        public override void Print()
+        public void Print()
         {
-            Console.WriteLine($"{this.username} : {this.email}");
+            Console.WriteLine($"{this.name} : {this.email}");
         }
     }
 }
