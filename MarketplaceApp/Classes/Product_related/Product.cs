@@ -39,7 +39,7 @@ namespace MarketplaceApp
 
         public void Print()
         {
-            Console.WriteLine($"-> ID: {this.id}, name: {this.name}, category: {this.category.ReturnString()}, price:{this.price}");
+            Console.WriteLine($"-> ID: {this.id}, name: {this.name}, description: {this.description}, category: {this.category.ReturnString()}, price:{this.price}");
         }
     }
 

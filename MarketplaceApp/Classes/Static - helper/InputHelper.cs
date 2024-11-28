@@ -33,7 +33,7 @@ namespace MarketplaceApp.Classes
             return input;
         }
 
-        public static double CheckBalance(string text)
+        public static double ParseDouble(string text)
         {
             Console.Clear();
             double balance;
@@ -48,17 +48,17 @@ namespace MarketplaceApp.Classes
 
         }
 
-        public static int CheckInt(string text)
+        public static int ParseInt(string text)
         {
             string input;
-            int discount;
+            int number;
             do
             {
                 input = CheckUserInput(text);
-                if (!int.TryParse(input, out discount)) Console.WriteLine("Unable to parse to number. Try Again.");
-                if (discount < 0) Console.WriteLine("Input cannot be less than 0.");
-            } while (!int.TryParse(input, out discount) || discount < 0);
-            return discount;
+                if (!int.TryParse(input, out number)) Console.WriteLine("Unable to parse to number. Try Again.");
+                if (number < 0) Console.WriteLine("Input cannot be less than 0.");
+            } while (!int.TryParse(input, out number) || number < 0);
+            return number;
         }
     }
 }

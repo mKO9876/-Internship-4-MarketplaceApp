@@ -18,5 +18,10 @@ namespace MarketplaceApp.Classes
             this.discount = d;
             this.productOnSale = p; 
         }
+
+        public void Print()
+        {
+            Console.WriteLine($"code: {this.code}, discount: {this.discount}, product on sale: {this.productOnSale.name}");
+        }
     }
 }

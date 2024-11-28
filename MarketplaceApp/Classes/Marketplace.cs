@@ -1,9 +1,11 @@
 ﻿using MarketplaceApp.Classes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MarketplaceApp
 {
@@ -50,14 +52,14 @@ namespace MarketplaceApp
             }
             foreach (var product in products)
             {
-                if (product.category.CheckCategoryEqual(category)) product.Print();
+                if (product.category.CheckCategoryEqual(category) && product.inStock) product.Print();
             }
         }
 
 
         //vendor methods
         public void AddNewVendor(Vendor v) { vendors.Add(v); }
-        public Vendor VendorEmailUsed(string email) 
+        public Vendor VendorEmailUsed(string email)
         {
 
             if (vendors.Count == 0) return null;
@@ -70,46 +72,66 @@ namespace MarketplaceApp
 
         public void AddPromoCode(Vendor vendor)
         {
+            Console.Clear();
             string pCode;
             do
             {
                 pCode = InputHelper.CheckUserInput("Insert promo code: ");
-                if (!PromoCodeExists(pCode)) Console.WriteLine("Promo code already exists, please input unique promo code");
-            } while (!PromoCodeExists(pCode));
-            int discount = InputHelper.CheckInt("Insert discount (without %): ");
-            Product productOnSale;
-            do
-            {
-                productOnSale = FindProductByName();
-                if (productOnSale.vendor.email != vendor.email) Console.WriteLine("You are not the owner of this product, insert promo code for your products only");
-            } while (productOnSale.vendor.email != vendor.email);
+                if (PromoCodeExists(pCode)) Console.WriteLine("Promo code already exists, please input unique promo code");
+            } while (PromoCodeExists(pCode));
+            int discount = InputHelper.ParseInt("Insert discount (without %): ");
+            Product productOnSale = FindProductByName(vendor);
 
             PromoCode newPromo = new PromoCode(pCode, discount, productOnSale);
-
             promoCodes.Add(newPromo);
-            Console.WriteLine("Promo code successfuly added.");
+            Console.WriteLine("Promo code added: ");
+            newPromo.Print();
         }
 
-        public Product FindProductByName()
+        public bool PromoCodeExists(string code)
         {
+            if (promoCodes.Count == 0) return false;
+            foreach (var promoCode in promoCodes)
+            {
+                if (promoCode.code == code) return true;
+            }
+            return false;
+        }
+
+        public Product FindProductByName(Vendor vendor)
+        {
+            Console.Clear();
             string productName;
             while (true)
             {
                 productName = InputHelper.CheckUserInput("Insert product name: ");
                 foreach (var product in products)
                 {
-                    if (product.name == productName) return product;
+                    if (product.name == productName && product.vendor.email == vendor.email) return product;
                 }
+                Console.WriteLine("Try again");
             }
         }
 
-        public bool PromoCodeExists(string code)
+
+
+        public void ShowVendorsProducts(Vendor vendor)
         {
-            foreach (var promoCode in promoCodes)
+            foreach (var product in products)
             {
-                if (promoCode.code == code) return true;
+                if (product.vendor.email == vendor.email) product.Print();
             }
-            return false;
+        }
+
+        public void AddNewProduct(Vendor vendor)
+        {
+            string name = InputHelper.CheckUserInput("Insert product name: ");
+            string description = InputHelper.CheckUserInput("Insert product description: ");
+            int price = InputHelper.ParseInt("Insert price: ");
+            Category productCategory = ShowCategory.ReturnCategory("Choose category for product: ");
+            Product newProduct = new Product(name, description, price, vendor, productCategory);
+            products.Add(newProduct);
+            newProduct.Print();
         }
 
         //public void ReturnItem(Transaction transaction)

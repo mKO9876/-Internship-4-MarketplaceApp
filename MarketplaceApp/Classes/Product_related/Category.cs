@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarketplaceApp.Classes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,11 +60,55 @@ namespace MarketplaceApp
             return false;
         }
 
-        public static bool CheckCategoryExists(string possibleCategory)
+        public static string CheckCategoryExists(string text)
         {
+            Console.Clear();
+            string input;
             List<string> categoryList = new List<string> { "electronics", "clothing", "books", "dairy products", "meat", "fruits and vegetables", "snacks", "baked goods", "household" };
-            if (categoryList.Contains(possibleCategory)) return true;
-            return false;
+            do
+            {
+                Console.WriteLine("Categories:\n- electronics, \n- clothing, \n- books, \n- dairy products, \n- meat, \n- fruits and vegetables, \n- snacks, \n- baked goods, \n- household");
+                input = InputHelper.CheckUserInput(text).ToLower();
+                if (!categoryList.Contains(input)) Console.WriteLine("Category does not exist, try again.");
+            } while (!categoryList.Contains(input));
+            return input;
+        }
+
+        public static Category ReturnCategory(string text)
+        {
+
+            string chosenCategory = CheckCategoryExists(text);
+            switch (chosenCategory)
+            {
+                case "electronics":
+                    return Category.Electronics;
+
+                case "clothing":
+                    return Category.Clothing;
+
+                case "books":
+                    return Category.Books;
+
+                case "dairy products":
+                    return Category.Dairy_products;
+
+                case "meat":
+                    return Category.Meat;
+
+                case "fruits and vegetables":
+                    return Category.Fruits_and_vegetables;
+
+                case "snacks":
+                    return Category.Snacks;
+
+                case "baked goods":
+                    return Category.Baked_goods;
+
+                default:
+                    return Category.Household;
+
+            }
+
         }
     }
 }

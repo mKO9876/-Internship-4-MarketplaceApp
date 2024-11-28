@@ -104,13 +104,7 @@ namespace MarketplaceApp
                             marketplace.ShowAllProductsInStock();
                             break;
                         case "2":
-                            string chosenCategory;
-                            do
-                            {
-                                Console.WriteLine("Categories:\n- electronics, \n- clothing, \n- books, \n- dairy products, \n- meat, \n- fruits and vegetables, \n- snacks, \n- baked goods, \n- household");
-                                chosenCategory = InputHelper.CheckUserInput("Which product category do you want to browse: ");
-                                if (!ShowCategory.CheckCategoryExists(chosenCategory)) Console.WriteLine("Category does not exist, try again.");
-                            } while (!ShowCategory.CheckCategoryExists(chosenCategory));
+                            string chosenCategory = ShowCategory.CheckCategoryExists("Which product category do you want to browse: ");
                             marketplace.ShowProductsByCategory(chosenCategory);
                             break;
                         case "3":
@@ -136,7 +130,29 @@ namespace MarketplaceApp
                     Console.WriteLine("1 - Check your products\n2 - Add new product\n3 - Add promo code\n4 - Change product price\n5 - Check profit\n6 - Log out");
                     string input = InputHelper.CheckUserInput("Option: ");
                     Console.Clear();
-                    
+                    switch (input)
+                    {
+                        case "1":
+                            Console.WriteLine("All your products: ");
+                            marketplace.ShowVendorsProducts(vendor);
+                            break;
+                        case "2":
+                            marketplace.AddNewProduct(vendor);
+                            break;
+                        case "3":
+                            marketplace.AddPromoCode(vendor);
+                            break;
+                        case "4":
+                            break;
+                        case "5":
+                            break;
+                        case "6":
+                            vendor.CheckProfit();
+                            return;
+                        default:
+                            Console.WriteLine("Error: unknown input value");
+                            break;
+                    }
                 }
             }
         }

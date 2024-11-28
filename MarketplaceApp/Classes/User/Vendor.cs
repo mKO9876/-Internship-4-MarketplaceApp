@@ -15,15 +15,17 @@ namespace MarketplaceApp
         public Vendor(string email, string username) {
             this.email = email;
             this.name = username;
-        }
-        void AddProduct()
-        {
-
+            this.profit = 0;
         }
 
         public void Print()
         {
             Console.WriteLine($"{this.name} : {this.email}");
+        }
+
+        public void CheckProfit()
+        {
+            Console.WriteLine("Your profit is: ", this.profit.ToString());
         }
     }
 }

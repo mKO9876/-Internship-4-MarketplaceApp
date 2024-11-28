@@ -22,7 +22,7 @@ namespace MarketplaceApp.Classes.Static___helper
                 if (newCustomer != null) Console.WriteLine("Email in use, try different email.");
             } while (newCustomer != null);
 
-            double balance = InputHelper.CheckBalance("Insert your balance: ");
+            double balance = InputHelper.ParseDouble("Insert your balance: ");
 
             newCustomer = new Customer(name, email, balance);
             market.AddNewCustomer(newCustomer);
