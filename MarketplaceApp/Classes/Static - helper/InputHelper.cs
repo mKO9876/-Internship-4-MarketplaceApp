@@ -60,5 +60,24 @@ namespace MarketplaceApp.Classes
             } while (!int.TryParse(input, out number) || number < 0);
             return number;
         }
+
+        public static DateTime HandleDateTime(string text)
+        {
+            DateTime date;
+            string input;
+            do
+            {
+                input = CheckUserInput(text);
+                if (!DateTime.TryParseExact(input, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture,
+                                System.Globalization.DateTimeStyles.None, out date))
+                    Console.WriteLine("Invalid input, try again.");
+
+            } while (!DateTime.TryParseExact(input, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture,
+                            System.Globalization.DateTimeStyles.None, out date));
+
+            return date;
+        }
+
+       
     }
 }

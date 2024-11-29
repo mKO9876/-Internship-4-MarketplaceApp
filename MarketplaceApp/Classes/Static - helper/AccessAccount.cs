@@ -18,7 +18,7 @@ namespace MarketplaceApp.Classes.Static___helper
             do
             {
                 email = InputHelper.CheckEmail("Insert email: ");
-                newCustomer = market.CustomerEmailUsed(email);
+                newCustomer = market.CustomerEmailUsed(email, name);
                 if (newCustomer != null) Console.WriteLine("Email in use, try different email.");
             } while (newCustomer != null);
 
@@ -39,9 +39,10 @@ namespace MarketplaceApp.Classes.Static___helper
             Customer existingCustomer;
             do
             {
+                string name = InputHelper.CheckUserInput("Insert name:  ");
                 email = InputHelper.CheckEmail("Insert email: ");
-                existingCustomer = market.CustomerEmailUsed(email);
-                if (existingCustomer == null) Console.WriteLine("Email does not exist, try again.");
+                existingCustomer = market.CustomerEmailUsed(email, name);
+                if (existingCustomer == null) Console.WriteLine("Email or name do not exist, try again.");
             } while (existingCustomer == null);
             Console.WriteLine("Customer found.");
             existingCustomer.Print();

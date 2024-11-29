@@ -14,20 +14,22 @@ namespace MarketplaceApp
         List<Customer> customers = new List<Customer>();
         List<Vendor> vendors = new List<Vendor>();
         List<Product> products = new List<Product>();
-
+        List<Transaction> transactions = new List<Transaction>();
         List<PromoCode> promoCodes = new List<PromoCode>();
 
         //customer methods
         public void AddNewCustomer(Customer c) { customers.Add(c); }
-        public Customer CustomerEmailUsed(string email)
+        public Customer CustomerEmailUsed(string email, string name)
         {
             if (customers.Count == 0) return null;
             foreach (var customer in customers)
             {
-                if (customer.email == email) return customer;
+                if (customer.email == email && customer.name == name) return customer;
             }
             return null;
         }
+
+
 
         public void ShowAllProductsInStock()
         {
@@ -42,7 +44,6 @@ namespace MarketplaceApp
                 if (product.inStock) product.Print();
             }
         }
-
         public void ShowProductsByCategory(string category)
         {
             if (products.Count == 0)
@@ -69,6 +70,14 @@ namespace MarketplaceApp
             }
             return null;
         }
+        public void ShowProfitInPeriod(Vendor vendor)
+        {
+            DateTime minDate = InputHelper.HandleDateTime("Insert date (dd-MM-yyyy): ");
+            foreach (var transaction in transactions)
+            {
+                if(transaction.vendor.email == vendor.email && transaction.dateCreated >= minDate ) transaction.Print();
+            }
+        }
 
         public void AddPromoCode(Vendor vendor)
         {
@@ -87,8 +96,7 @@ namespace MarketplaceApp
             Console.WriteLine("Promo code added: ");
             newPromo.Print();
         }
-
-        public bool PromoCodeExists(string code)
+        bool PromoCodeExists(string code)
         {
             if (promoCodes.Count == 0) return false;
             foreach (var promoCode in promoCodes)
@@ -97,6 +105,7 @@ namespace MarketplaceApp
             }
             return false;
         }
+
 
         public Product FindProductByName(Vendor vendor)
         {
@@ -112,9 +121,14 @@ namespace MarketplaceApp
                 Console.WriteLine("Try again");
             }
         }
-
-
-
+        public void ShowSoldProductWithCategory(Vendor vendor)
+        {
+            Category chosenCategory = ShowCategory.ReturnCategory("Choose category you want to filter with: ");
+            foreach (var product in products)
+            {
+                if (product.vendor.email == vendor.email && !product.inStock && product.category == chosenCategory) product.Print();
+            }
+        }
         public void ShowVendorsProducts(Vendor vendor)
         {
             foreach (var product in products)
@@ -122,7 +136,6 @@ namespace MarketplaceApp
                 if (product.vendor.email == vendor.email) product.Print();
             }
         }
-
         public void AddNewProduct(Vendor vendor)
         {
             string name = InputHelper.CheckUserInput("Insert product name: ");

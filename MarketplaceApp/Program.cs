@@ -105,7 +105,8 @@ namespace MarketplaceApp
                             break;
                         case "2":
                             string chosenCategory = ShowCategory.CheckCategoryExists("Which product category do you want to browse: ");
-                            marketplace.ShowProductsByCategory(chosenCategory);
+                            bool showSold = false;
+                            marketplace.ShowProductsByCategory(chosenCategory, showSold);
                             break;
                         case "3":
                             customer.ShowFavorites();
@@ -127,7 +128,7 @@ namespace MarketplaceApp
             {
                 while (true)
                 {
-                    Console.WriteLine("1 - Check your products\n2 - Add new product\n3 - Add promo code\n4 - Change product price\n5 - Check profit\n6 - Log out");
+                    Console.WriteLine("1 - Check your products\n2 - Add new product\n3 - Add promo code\n4 - Change product price\n5 - Check profit\n6 - Show sold products based on category\n7 - Show profit in one period\n8 - Log out");
                     string input = InputHelper.CheckUserInput("Option: ");
                     Console.Clear();
                     switch (input)
@@ -143,11 +144,17 @@ namespace MarketplaceApp
                             marketplace.AddPromoCode(vendor);
                             break;
                         case "4":
+                            Product product = marketplace.FindProductByName(vendor);
+                            int newPrice = InputHelper.ParseInt("Insert new price: ");
+                            product.ChangePrice(newPrice);
+                            product.Print();
                             break;
                         case "5":
+                            vendor.CheckProfit();
                             break;
                         case "6":
-                            vendor.CheckProfit();
+                            
+                        case "7":
                             return;
                         default:
                             Console.WriteLine("Error: unknown input value");
