@@ -105,8 +105,7 @@ namespace MarketplaceApp
                             break;
                         case "2":
                             string chosenCategory = ShowCategory.CheckCategoryExists("Which product category do you want to browse: ");
-                            bool showSold = false;
-                            marketplace.ShowProductsByCategory(chosenCategory, showSold);
+                            marketplace.ShowProductsByCategory(chosenCategory);
                             break;
                         case "3":
                             customer.ShowFavorites();
@@ -153,8 +152,12 @@ namespace MarketplaceApp
                             vendor.CheckProfit();
                             break;
                         case "6":
-                            
+                            marketplace.ShowSoldProductWithCategory(vendor);
+                            break;
                         case "7":
+                            marketplace.ShowProfitInPeriod(vendor);
+                            break;
+                        case "8":
                             return;
                         default:
                             Console.WriteLine("Error: unknown input value");
