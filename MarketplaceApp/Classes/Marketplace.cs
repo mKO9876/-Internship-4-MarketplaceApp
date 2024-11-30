@@ -221,6 +221,8 @@ namespace MarketplaceApp
         public void AddPromoCode(Vendor vendor)
         {
             Console.Clear();
+            Product productOnSale = FindProductByName(vendor);
+            if (productOnSale == null ) return;
             string pCode;
             do
             {
@@ -228,7 +230,6 @@ namespace MarketplaceApp
                 if (PromoCodeExists(pCode)) Console.WriteLine("Promo code already exists, please input unique promo code");
             } while (PromoCodeExists(pCode));
             double discount = InputHelper.ParseDouble("Insert discount (without %): ");
-            Product productOnSale = FindProductByName(vendor);
 
             PromoCode newPromo = new PromoCode(pCode, discount, productOnSale);
             promoCodes.Add(newPromo);
