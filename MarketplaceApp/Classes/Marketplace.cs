@@ -222,7 +222,6 @@ namespace MarketplaceApp
         {
             Console.Clear();
             Product productOnSale = FindProductByName(vendor);
-            if (productOnSale == null ) return;
             string pCode;
             do
             {
