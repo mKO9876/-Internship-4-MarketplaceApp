@@ -8,25 +8,24 @@ namespace MarketplaceApp
 {
     public class Customer 
     {
-        double balance;
+        public double balance;
         public string name;
         public string email;
-        List<Product> productHistory;
         List<Product> productFavorite;
 
         public Customer(string n, string e, double b) {
             this.name = n;
             this.email = e; 
             this.balance = b;
-            this.productHistory = new List<Product>();
             this.productFavorite = new List<Product>();
         }
 
-        void BuyProduct()
+        public void AddFavorite(Product p)
         {
-            //provjeri može li se kupiti: postoji li u dućanu i imaju li dovoljno novaca
+            productFavorite.Add(p);
+            Console.Write("Product added to favorites: ");
+            p.Print();
         }
-
         public void Print()
         {
             Console.WriteLine($"{this.name} : {this.email} - Balance: {this.balance} euro");
@@ -41,6 +40,12 @@ namespace MarketplaceApp
             }
             foreach (var item in productFavorite) item.Print();
 
+        }
+
+        public void BuyProduct(double price)
+        {
+            this.balance -= price;
+            Console.WriteLine("Transaction completed");
         }
     }
 }

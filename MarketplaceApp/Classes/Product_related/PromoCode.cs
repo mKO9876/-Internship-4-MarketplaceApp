@@ -9,10 +9,10 @@ namespace MarketplaceApp.Classes
     public class PromoCode
     {
         public string code;
-        public int discount;
+        public double discount;
         public Product productOnSale;
 
-        public PromoCode(string c, int d, Product p)
+        public PromoCode(string c, double d, Product p)
         {
             this.code = c;
             this.discount = d;

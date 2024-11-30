@@ -94,11 +94,19 @@ namespace MarketplaceApp
             {
                 while (true)
                 {
-                    Console.WriteLine("1 - Check all products\n2 - Find product based on specific category\n3 - Check your favorites\n4 - Check your history\n5 - Check your returns\n6 - Log out");
+                    Console.WriteLine("0 - Buy product\n1 - Check all products\n2 - Find product based on specific category\n3 - Show your favorites\n4 - Add favorite product\n5 - Check your history\n6 - Check your returns\n7 - Log out");
                     string input = InputHelper.CheckUserInput("Option: ");
+                    Product product;
                     Console.Clear();
                     switch (input)
                     {
+                        case "0":
+                            do
+                            {
+                                product = marketplace.FindProductByID();
+                            } while (product == null);
+                            marketplace.BuyProduct(product, customer);
+                            break;
                         case "1":
                             Console.WriteLine("All products in stock: ");
                             marketplace.ShowAllProductsInStock();
@@ -111,10 +119,29 @@ namespace MarketplaceApp
                             customer.ShowFavorites();
                             break;
                         case "4":
+                            do
+                            {
+                                product = marketplace.FindProductByID();
+                            } while (product == null);
+                            customer.AddFavorite(product);
+                            Console.WriteLine("Product stored in 'favorite products'");
                             break;
                         case "5":
+                            Console.WriteLine("All transactions: ");
+                            marketplace.CheckCustomersTransactions(customer);
                             break;
                         case "6":
+                            Console.WriteLine("All returned product transactions: ");
+                            marketplace.CheckCustomersTransactions(customer);
+                            break;
+                        case "7":
+                            do
+                            {
+                                product = marketplace.FindProductByID();
+                            } while (product == null);
+                            marketplace.ReturnProduct(customer, product.id);
+                            break;
+                        case "8":
                             return;
                         default:
                             Console.WriteLine("Error: unknown input value");
@@ -144,7 +171,7 @@ namespace MarketplaceApp
                             break;
                         case "4":
                             Product product = marketplace.FindProductByName(vendor);
-                            int newPrice = InputHelper.ParseInt("Insert new price: ");
+                            double newPrice = InputHelper.ParseDouble("Insert new price: ");
                             product.ChangePrice(newPrice);
                             product.Print();
                             break;

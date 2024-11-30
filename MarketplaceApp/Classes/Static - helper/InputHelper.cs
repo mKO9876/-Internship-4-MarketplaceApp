@@ -48,18 +48,18 @@ namespace MarketplaceApp.Classes
 
         }
 
-        public static int ParseInt(string text)
-        {
-            string input;
-            int number;
-            do
-            {
-                input = CheckUserInput(text);
-                if (!int.TryParse(input, out number)) Console.WriteLine("Unable to parse to number. Try Again.");
-                if (number < 0) Console.WriteLine("Input cannot be less than 0.");
-            } while (!int.TryParse(input, out number) || number < 0);
-            return number;
-        }
+        //public static int ParseInt(string text)
+        //{
+        //    string input;
+        //    int number;
+        //    do
+        //    {
+        //        input = CheckUserInput(text);
+        //        if (!int.TryParse(input, out number)) Console.WriteLine("Unable to parse to number. Try Again.");
+        //        if (number < 0) Console.WriteLine("Input cannot be less than 0.");
+        //    } while (!int.TryParse(input, out number) || number < 0);
+        //    return number;
+        //}
 
         public static DateTime HandleDateTime(string text)
         {
