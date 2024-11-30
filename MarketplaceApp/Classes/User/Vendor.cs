@@ -12,9 +12,9 @@ namespace MarketplaceApp
         public string name;
         public string email;
         public double profit;
-        public Vendor(string email, string username) {
+        public Vendor(string name, string email) {
             this.email = email;
-            this.name = username;
+            this.name = name;
             this.profit = 0;
         }
 
@@ -25,7 +25,7 @@ namespace MarketplaceApp
 
         public void CheckProfit()
         {
-            Console.WriteLine("Your profit is: ", this.profit.ToString());
+            Console.WriteLine("Your profit is: " + Math.Round(this.profit, 2));
         }
     }
 }

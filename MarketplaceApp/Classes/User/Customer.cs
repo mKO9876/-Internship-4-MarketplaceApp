@@ -24,7 +24,6 @@ namespace MarketplaceApp
         {
             productFavorite.Add(p);
             Console.Write("Product added to favorites: ");
-            p.Print();
         }
         public void Print()
         {

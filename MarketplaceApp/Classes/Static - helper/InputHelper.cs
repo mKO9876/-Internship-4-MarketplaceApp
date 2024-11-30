@@ -42,8 +42,8 @@ namespace MarketplaceApp.Classes
             {
                 input = CheckUserInput(text);
                 if (!double.TryParse(input, out balance)) Console.WriteLine("Unable to parse to number. Try Again.");
-                if (balance < 0) Console.WriteLine("Input cannot be less than 0.");
-            } while (!double.TryParse(input, out balance) || balance < 0);
+                if (balance <= 0) Console.WriteLine("Input cannot be less than 0.");
+            } while (!double.TryParse(input, out balance) || balance <= 0);
             return balance;
 
         }

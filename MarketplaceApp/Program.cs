@@ -94,7 +94,7 @@ namespace MarketplaceApp
             {
                 while (true)
                 {
-                    Console.WriteLine("0 - Buy product\n1 - Check all products\n2 - Find product based on specific category\n3 - Show your favorites\n4 - Add favorite product\n5 - Check your history\n6 - Check your returns\n7 - Log out");
+                    Console.WriteLine("0 - Buy product\n1 - Check all products\n2 - Find product based on specific category\n3 - Show your favorites\n4 - Add favorite product\n5 - Check your history\n6 - Check your returns\n7 - Return product\n8 - Log out");
                     string input = InputHelper.CheckUserInput("Option: ");
                     Product product;
                     Console.Clear();
@@ -132,7 +132,7 @@ namespace MarketplaceApp
                             break;
                         case "6":
                             Console.WriteLine("All returned product transactions: ");
-                            marketplace.CheckCustomersTransactions(customer);
+                            marketplace.CheckCustomersTransactionsReturned(customer);
                             break;
                         case "7":
                             do

@@ -24,7 +24,7 @@ namespace MarketplaceApp
             if (customers.Count == 0) return null;
             foreach (var customer in customers)
             {
-                if (customer.email == email && customer.name == name) return customer;
+                if (customer.email == email || customer.name == name) return customer;
             }
             return null;
         }
@@ -33,41 +33,41 @@ namespace MarketplaceApp
         {
             if (product.inStock)
             {
-                if (customer.balance >= product.price)
+                if (customer.balance - product.price >= 0)
                 {
                     foreach (var prod in products)
                     {
                         if (prod.id == product.id)
                         {
+                            Console.WriteLine(product.price);
                             double newPrice = UsePromoCode(product);
                             prod.ChangeStockValue();
-                            customer.balance -= prod.price;
                             bool isReturned = false;
                             Transaction t = new Transaction(prod, customer, prod.vendor, isReturned, newPrice);
                             transactions.Add(t);
-                            customer.BuyProduct(newPrice);
+                            customer.BuyProduct(newPrice); // Deducts balance inside this method
                             break;
                         }
-
                     }
                 }
                 else Console.WriteLine($"You do not have enough money to buy this product. Your balance: {customer.balance} and product price: {product.price}");
             }
-            else Console.WriteLine("Product you're trying to buy isn't available anymore.");
         }
 
         public double UsePromoCode(Product product)
         {
             string input = InputHelper.CheckUserInput("Add promo code (add 'n' if there are no promo codes): : ");
-            if (input != "n" || input != "N")
+            if (input != "n" && input != "N")
             {
-                foreach(var item in promoCodes)
+                foreach (var item in promoCodes)
                 {
-                    if (item.code == input) {
+                    if (item.code == input)
+                    {
                         if (item.productOnSale.id == product.id)
                         {
-                            return product.price - product.price*item.discount/100;
-                        } 
+                            Console.WriteLine("Promo code valid.");
+                            return product.price - product.price * item.discount / 100;
+                        }
                     }
                 }
                 Console.WriteLine($"Couldn't find '{input}' promo code");
@@ -81,14 +81,13 @@ namespace MarketplaceApp
                 Console.WriteLine("PRODUCT ID: ", product.id.ToString());
                 if (product.id == productId)
                 {
-                    if (product.inStock)
-                    {
-                        bool isReturned = true;
-                        Transaction newTransaction = new Transaction(product, customer, product.vendor, isReturned, product.price);
-                        transactions.Add(newTransaction);
-                        product.inStock = true;
-                        ReturnMoney(customer, product);
-                    }
+
+                    bool isReturned = true;
+                    Transaction newTransaction = new Transaction(product, customer, product.vendor, isReturned, product.price);
+                    transactions.Add(newTransaction);
+                    product.inStock = true;
+                    ReturnMoney(customer, product);
+
                 }
             }
         }
@@ -133,32 +132,32 @@ namespace MarketplaceApp
         }
         public void CheckCustomersTransactions(Customer customer)
         {
-            bool checkIfPrinted = false;
+            bool isPrinted = false;
             foreach (var transaction in transactions)
             {
                 if (transaction.customer == customer)
                 {
-                    checkIfPrinted = true;
+                    isPrinted = true;
                     transaction.Print();
                 }
             }
 
-            if (checkIfPrinted) Console.WriteLine("No transactions.");
+            if (!isPrinted) Console.WriteLine("No transactions.");
         }
 
         public void CheckCustomersTransactionsReturned(Customer customer)
         {
-            bool checkIfPrinted = false;
+            bool isPrinted = false;
             foreach (var transaction in transactions)
             {
                 if (transaction.customer == customer && transaction.isReturned == true)
                 {
-                    checkIfPrinted = true;
+                    isPrinted = true;
                     transaction.Print();
                 }
             }
 
-            if (checkIfPrinted) Console.WriteLine("No transactions.");
+            if (!isPrinted) Console.WriteLine("No transactions.");
         }
         public void ShowAllProductsInStock()
         {
@@ -175,23 +174,27 @@ namespace MarketplaceApp
         }
         public void ShowProductsByCategory(string category)
         {
+            bool isPrinted = false;
             if (products.Count == 0)
             {
-                Console.WriteLine("There are no products at this point. Please return later.");
+                Console.WriteLine("There are no products. Please return later.");
                 return;
             }
             foreach (var product in products)
             {
-                if (product.category.CheckCategoryEqual(category) && product.inStock) product.Print();
+                if (product.category.CheckCategoryEqual(category) && product.inStock)
+                {
+                    product.Print();
+                    isPrinted = true;
+                }
             }
+            if (!isPrinted) Console.WriteLine("No products in this category. Try again later.");
         }
 
 
-        //vendor methods
         public void AddNewVendor(Vendor v) { vendors.Add(v); }
         public Vendor VendorEmailUsed(string email)
         {
-
             if (vendors.Count == 0) return null;
             foreach (var vendor in vendors)
             {
@@ -202,10 +205,17 @@ namespace MarketplaceApp
         public void ShowProfitInPeriod(Vendor vendor)
         {
             DateTime minDate = InputHelper.HandleDateTime("Insert date (dd-MM-yyyy): ");
+            Console.WriteLine("All transactions in a period:  ");
+            bool isPrinted = false;
             foreach (var transaction in transactions)
             {
-                if (transaction.vendor.email == vendor.email && transaction.dateCreated >= minDate) transaction.Print();
+                if (transaction.vendor.email == vendor.email && transaction.dateCreated >= minDate)
+                {
+                    transaction.Print();
+                    isPrinted = true;
+                }
             }
+            if (!isPrinted) Console.WriteLine("No profit in that period.");
         }
 
         public void AddPromoCode(Vendor vendor)
@@ -253,18 +263,31 @@ namespace MarketplaceApp
 
         public void ShowSoldProductWithCategory(Vendor vendor)
         {
+            bool isPrinted = false;
             Category chosenCategory = ShowCategory.ReturnCategory("Choose category you want to filter with: ");
+            Console.WriteLine("Products in category: ");
             foreach (var product in products)
             {
-                if (product.vendor.email == vendor.email && !product.inStock && product.category == chosenCategory) product.Print();
+                if (product.vendor.email == vendor.email && !product.inStock && product.category == chosenCategory)
+                {
+                    product.Print();
+                    isPrinted = true;
+                }
             }
+            if (!isPrinted) Console.WriteLine("There are no products in that category.");
         }
         public void ShowVendorsProducts(Vendor vendor)
         {
+            bool isPrinted = false;
             foreach (var product in products)
             {
-                if (product.vendor.email == vendor.email) product.Print();
+                if (product.vendor.email == vendor.email)
+                {
+                    product.Print();
+                    isPrinted = true;
+                }
             }
+            if (!isPrinted) Console.WriteLine("There are no products");
         }
         public void AddNewProduct(Vendor vendor)
         {
@@ -274,6 +297,7 @@ namespace MarketplaceApp
             Category productCategory = ShowCategory.ReturnCategory("Choose category for product: ");
             Product newProduct = new Product(name, description, price, vendor, productCategory);
             products.Add(newProduct);
+            Console.WriteLine("Product addded.");
             newProduct.Print();
         }
     }
